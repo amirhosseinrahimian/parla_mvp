@@ -10,13 +10,26 @@ class Settings extends StatelessWidget {
     return Container(
       // color: Colors.pink,
       child: Center(
-        child: Text(
-          'Settings',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-            color: AppColors.textColor,
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Settings',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                color: AppColors.textColor,
+              ),
+            ),
+            SizedBox(height: 8.0,),
+            Text(
+              'so...on',
+              style: TextStyle(
+                color: AppColors.textColor,
+              ),
+            ),
+          ],
         ),
       ),
     );

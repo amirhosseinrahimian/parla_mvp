@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'app.dart';
 import 'res/AppColors.dart';
@@ -17,10 +18,20 @@ class Parla extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        GlobalCupertinoLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale("fa", "IR"),
+      ],
+      locale: const Locale("fa", "IR"),
       theme: ThemeData(
         splashFactory: InkRipple.splashFactory,
         highlightColor: Colors.transparent,
         splashColor: AppColors.primaryColorDark.withOpacity(.1),
+        primaryColor: AppColors.primaryColor,
       ),
       home: const Splash(),
     );
@@ -48,7 +59,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
       });
     _animationController.forward();
     _animationController.repeat(reverse: true);
-    Timer(const Duration(milliseconds: 5000), () {
+    Timer(const Duration(milliseconds: 2000), () {
       _animationController.dispose();
       Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => const App()),

@@ -14,8 +14,8 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  int _navIndex = 2;
-  int _perv_navIndex = 2;
+  int _navIndex = 0;
+  int _perv_navIndex = 0;
 
   void _onNavTap(index) {
     setState(() {
@@ -24,19 +24,22 @@ class _AppState extends State<App> {
     });
   }
 
-  final screens = [const Settings(), const Music(), const Home()];
+  final screens = [const Home(), const Music(), const Settings()];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.primaryColor,
-      extendBody: true,
-      body: IndexedStack(
-        // for save state of per ...
-        index: _navIndex,
-        children: screens,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: AppColors.primaryColor,
+        extendBody: true,
+        body: IndexedStack(
+          // for save state of per ...
+          index: _navIndex,
+          children: screens,
+        ),
+        bottomNavigationBar: BottomNav(_navIndex, _onNavTap),
       ),
-      bottomNavigationBar: BottomNav(_navIndex, _onNavTap),
     );
   }
 }
