@@ -7,7 +7,7 @@ import '../response/toggle.dart';
 
 part 'api.g.dart';
 
-@RestApi(baseUrl: "http://2.184.58.254:9000/api/")
+@RestApi()
 abstract class ApiClient {
   factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;
 

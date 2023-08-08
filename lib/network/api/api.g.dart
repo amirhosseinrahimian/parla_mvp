@@ -12,9 +12,7 @@ class _ApiClient implements ApiClient {
   _ApiClient(
     this._dio, {
     this.baseUrl,
-  }) {
-    baseUrl ??= 'http://2.184.58.254:9000/api/';
-  }
+  });
 
   final Dio _dio;
 

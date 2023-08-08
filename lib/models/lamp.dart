@@ -8,14 +8,14 @@ class Lamp extends Device {
   Lamp(
     id,
     name,
-    // order,
+    order,
     roomID,
     device_type,
     this.state,
   ) : super(
           id,
           name,
-          // order,
+          order,
           roomID,
           device_type,
         );

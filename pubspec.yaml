@@ -48,6 +48,8 @@ dependencies:
 
   on_audio_query: ^2.6.1
 
+  permission_handler: ^10.2.0
+
 
 flutter_native_splash:
   android : true
@@ -79,6 +81,7 @@ dev_dependencies:
   build_runner:
   json_serializable: ^6.5.4
   built_value_generator: ^8.4.2
+  just_audio: ^0.9.31
 
 flutter_icons:
   image_path: "assets/logo/ic_launcher.png"

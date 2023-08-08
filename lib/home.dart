@@ -68,7 +68,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
           indicatorPadding: EdgeInsets.only(top: 44),
           controller: tabController,
           indicatorSize: TabBarIndicatorSize.label,
-          labelStyle: TextStyle(fontFamily: 'yekan'),
+          labelStyle: const TextStyle(fontFamily: 'yekan'),
           tabs: tabs,
         );
         tabContentWidget = TabBarView(
@@ -162,7 +162,9 @@ class _DevicesViewState extends State<DevicesView> {
     AppRepository.instance.getDevices(widget.room.id).then((value) {
       deviceList.addAll(value.lamps);
       deviceList.addAll(value.doors);
-      setState(() {});
+      setState(() {
+        debugPrint(AppRepository.instance.getIp());
+      });
     });
   }
 
@@ -200,86 +202,114 @@ class DeviceWidget extends StatefulWidget {
 
 class _DeviceWidgetState extends State<DeviceWidget> {
   bool loading = false;
+  double scale = 1.0;
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: AppColors.primaryColorLight,
-      shape: RoundedRectangleBorder(
-        side: BorderSide(
-            color: (widget.device.device_type == 0)
-                ? (widget.device as Lamp).state == 'ON'
-                    ? AppColors.secondaryColor
-                    : AppColors.primaryColor
-                : (widget.device as Door).state == 'OPEN'
-                    ? AppColors.secondaryColor
-                    : AppColors.primaryColor),
-        borderRadius: BorderRadius.circular(18.0),
-      ),
-      elevation: 0,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            FloatingActionButton(
-              heroTag: widget.device.id,
-              onPressed: () {
-                setState(() {
-                  loading = !loading;
-                });
-                AppRepository.instance.toggle(widget.device).then((value) {
-                  if (value.state == 'ON') {
-                    debugPrint('ON');
-                  } else {
-                    debugPrint('OFF');
-                  }
-                });
-              },
-              backgroundColor: (widget.device.device_type == 0)
+    return InkWell(
+      onTap: () {
+        // Navigator.of(context).push(
+        //   MaterialPageRoute(builder: (context) => const LampSettings()),
+        // );
+        // todo : handle on device click
+      },
+      child: Card(
+        color: AppColors.primaryColorLight,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+              color: (widget.device.device_type == 0)
                   ? (widget.device as Lamp).state == 'ON'
                       ? AppColors.secondaryColor
                       : AppColors.primaryColor
                   : (widget.device as Door).state == 'OPEN'
                       ? AppColors.secondaryColor
-                      : AppColors.primaryColor,
-              elevation: 0,
-              child: Stack(
-                fit: StackFit.expand,
-                alignment: Alignment.center,
-                children: [
-                  (loading)
-                      ? const CircularProgressIndicator(
-                          color: AppColors.secondaryColor,
-                          strokeWidth: 2.0,
-                        )
-                      : Container(),
-                  Transform.scale(
-                    scale: ((loading) ? 0.8 : 1.0),
-                    child: Icon(widget.device.device_type == 0
-                        ? AppIcons.lamp
-                        : AppIcons.door),
+                      : AppColors.primaryColor),
+          borderRadius: BorderRadius.circular(18.0),
+        ),
+        elevation: 0,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ClipOval(
+                child: Material(
+                  color: (widget.device.device_type == 0)
+                      ? (widget.device as Lamp).state == 'ON'
+                          ? AppColors.secondaryColor
+                          : AppColors.primaryColor
+                      : (widget.device as Door).state == 'OPEN'
+                          ? AppColors.secondaryColor
+                          : AppColors.primaryColor,
+                  child: InkWell(
+                    onLongPress: () {
+                      debugPrint('LONG'); // todo :
+                    },
+                    onTap: () {
+                      setState(() {
+                        loading = !loading;
+                      });
+                      AppRepository.instance
+                          .toggle(widget.device)
+                          .then((value) {
+                        if (value.state == 'ON') {
+                          debugPrint('ON'); // todo :
+                        } else {
+                          debugPrint('OFF'); // todo :
+                        }
+                        if (value.state == 'OPEN') {
+                          debugPrint('OPEN'); // todo :
+                        } else {
+                          debugPrint('CLOSE'); // todo :
+                        }
+                      });
+                    },
+                    child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        alignment: Alignment.center,
+                        children: [
+                          (loading)
+                              ? const CircularProgressIndicator(
+                                  color: AppColors.secondaryColor,
+                                  strokeWidth: 2.0,
+                                )
+                              : Container(),
+                          Transform.scale(
+                            scale: (scale),
+                            child: Icon(
+                              widget.device.device_type == 0
+                                  ? AppIcons.lamp
+                                  : AppIcons.door,
+                              color: AppColors.secondaryColorWhite,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
+                ),
+              ),
+              const SizedBox(
+                width: 10.0,
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FontedText(widget.device.name,
+                      size: 16.0, color: AppColors.textColor),
+                  FontedText(
+                      widget.device.device_type == 0
+                          ? (widget.device as Lamp).state
+                          : (widget.device as Door).state,
+                      size: 14.0,
+                      color: AppColors.secondaryColorLight),
                 ],
               ),
-            ),
-            const SizedBox(
-              width: 8.0,
-            ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                FontedText(widget.device.name,
-                    size: 16.0, color: AppColors.textColor),
-                FontedText(
-                    widget.device.device_type == 0
-                        ? (widget.device as Lamp).state
-                        : (widget.device as Door).state,
-                    size: 14.0,
-                    color: AppColors.secondaryColorLight),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

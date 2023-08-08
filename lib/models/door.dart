@@ -8,14 +8,14 @@ class Door extends Device {
   Door(
     id,
     name,
-    // order,
+    order,
     roomID,
     device_type,
     this.state,
   ) : super(
           id,
           name,
-          // order,
+          order,
           roomID,
           device_type,
         );

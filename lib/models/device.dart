@@ -7,14 +7,14 @@ class Device {
   Device(
     this.id,
     this.name,
-    // this.order,
+    this.order,
     this.roomID,
     this.device_type,
   );
 
   final int id;
   final String name;
-  // final int order;
+  final int order;
   final int roomID;
   final int device_type;
 

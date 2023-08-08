@@ -8,6 +8,7 @@ import 'package:parla_home/network/response/toggle.dart';
 import 'api/api.dart';
 
 class AppRepository {
+  String _ip = '31.25.132.103';
   late ApiClient _apiRequest;
   late Dio dio;
 
@@ -15,10 +16,18 @@ class AppRepository {
 
   AppRepository._() {
     dio = Dio();
-    _apiRequest = ApiClient(dio);
+    _apiRequest = ApiClient(dio, baseUrl: 'http://$_ip:9000/api/');
   }
 
   static AppRepository get instance => _instance;
+
+  void changeIp(String ip) {
+    _ip = ip;
+  }
+
+  String getIp() {
+    return _ip;
+  }
 
   Future<GetRoomsResponse> getRooms() {
     return _apiRequest.getRooms();
